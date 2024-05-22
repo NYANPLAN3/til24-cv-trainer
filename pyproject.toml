@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "til24-cv-trainer"
+version = "0.1.0"
+description = "template for python api server"
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{ include = "tilcvtrainer" }]
+
+[tool.poetry.dependencies]
+python = "<3.13,>=3.9"
+fiftyone = "^0.23.8"
+opencv-python-headless = "^4.9.0.80"
+ultralytics = { path = "thirdparty/ultralytics", develop = true }
+albumentations = "^1.4.7"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "*"
+poethepoet = "*"
+rich = "^13.7.1"
+ipykernel = "^6.29.4"
+ipympl = "^0.9.4"
+ipywidgets = "^8.1.2"
+
+[tool.ruff.lint]
+select = ["D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

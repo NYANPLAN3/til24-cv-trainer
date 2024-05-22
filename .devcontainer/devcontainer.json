@@ -1,0 +1,48 @@
+// Format details: https://aka.ms/devcontainer.json
+// Custom Dockerfile: https://containers.dev/guide/dockerfile
+{
+  "name": "til24-cv-trainer",
+
+  // https://github.com/devcontainers/templates/tree/main/src/ubuntu
+  "image": "mcr.microsoft.com/devcontainers/base:jammy",
+
+  // https://containers.dev/features
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "installTools": true,
+      "toolsToInstall": "poetry",
+      "version": "3.11"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "charliermarsh.ruff",
+        "njpwerner.autodocstring",
+        "tamasfe.even-better-toml"
+      ]
+    }
+  },
+
+  "hostRequirements": { "gpu": "optional" },
+
+  // Mount package caches.
+  "mounts": [
+    {
+      "type": "volume",
+      "source": "pypoetry-cache",
+      "target": "/home/vscode/.cache/pypoetry"
+    },
+    {
+      "type": "volume",
+      "source": "apt-cache",
+      "target": "/var/cache/apt"
+    }
+  ],
+
+  "runArgs": ["--shm-size=24G"],
+
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": ".devcontainer/hooks/postCreate.sh"
+}

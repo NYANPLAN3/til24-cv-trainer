@@ -1,0 +1,3 @@
+[submodule "thirdparty/ultralytics"]
+	path = thirdparty/ultralytics
+	url = https://github.com/Interpause/ultralytics.git
