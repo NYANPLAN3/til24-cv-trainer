@@ -20,7 +20,8 @@
       "extensions": [
         "charliermarsh.ruff",
         "njpwerner.autodocstring",
-        "tamasfe.even-better-toml"
+        "tamasfe.even-better-toml",
+        "ms-toolsai.jupyter"
       ]
     }
   },
@@ -42,6 +43,7 @@
   ],
 
   "runArgs": ["--shm-size=24G"],
+  "shutdownAction": "none",
 
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": ".devcontainer/hooks/postCreate.sh"
