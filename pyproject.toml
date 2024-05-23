@@ -10,8 +10,11 @@ packages = [{ include = "tilcvtrainer" }]
 python = "<3.13,>=3.9"
 fiftyone = "^0.23.8"
 opencv-python-headless = "^4.9.0.80"
-ultralytics = { path = "thirdparty/ultralytics", develop = true }
 albumentations = "^1.4.7"
+ultralytics = { path = "thirdparty/ultralytics", develop = true }
+open-clip-torch = { path = "thirdparty/open_clip", extras = [
+    "training",
+], develop = true }
 
 [tool.poetry.group.dev.dependencies]
 ruff = "*"
