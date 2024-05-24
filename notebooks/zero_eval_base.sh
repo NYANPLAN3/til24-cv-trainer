@@ -15,31 +15,25 @@ export PYTORCH_CUDA_ALLOC_CONF=backend:cudaMallocAsync
 # --force-patch-dropout 0.0 \
 # --save-most-recent \
 exec python -m training.main \
-    --train-data /workspaces/til24-cv-trainer/data/til24id/train/labels.csv \
     --val-data /workspaces/til24-cv-trainer/data/til24id/val/labels.csv \
     --imagenet-val /workspaces/til24-cv-trainer/data/imagenette2-160/val \
     --workers 8 \
     --batch-size 8 \
     --accum-freq 128 \
     --epochs 32 \
-    --aug-cfg scale='(0.9, 1.1)' color_jitter='(0.2, 0.4, 0.2, 0.0)' color_jitter_prob=0.8 use_extra=True \
-    --lr 7e-7 \
-    --wd 0.005 \
-    --warmup 250 \
+    --lr 0 \
+    --wd 100 \
+    --warmup 100000 \
     --zeroshot-frequency 1 \
-    --save-frequency 2 \
-    --save-most-recent \
+    --save-frequency -1 \
     --precision amp \
     --force-image-size 224 \
     --lock-image \
-    --lock-image-unlocked-groups 999 \
     --lock-image-freeze-bn-stats \
     --lock-text \
-    --lock-text-unlocked-layers 999 \
     --lock-text-freeze-layer-norm \
-    --force-patch-dropout 0.1 \
+    --force-patch-dropout 0 \
     --log-every-n-steps 1 \
-    --report-to tensorboard \
     --model ViT-H-14-quickgelu \
     --pretrained dfn5b \
     --image-interpolation bicubic \
