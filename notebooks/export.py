@@ -6,12 +6,13 @@ from open_clip import create_model_from_pretrained, get_model_config, get_tokeni
 from open_clip.tokenizer import HFTokenizer
 
 MODEL_ARCH = "ViT-H-14-quickgelu"
-FT_PATH = "/workspaces/til24-cv-trainer/notebooks/archive/2024_05_23-15_34_38-model_ViT-H-14-quickgelu-lr_7e-07-b_8-j_8-p_amp/checkpoints/epoch_8.pt"
+FT_PATH = "/workspaces/til24-cv-trainer/notebooks/logs/2024_05_26-02_45_29-model_ViT-H-14-quickgelu-lr_1e-06-b_8-j_16-p_amp/checkpoints/epoch_32.pt"
 PRECISION = "fp16"  # Experiments with/without AMP show no diff between fp16 and fp32
 IMAGE_INTERPOLATION = "bicubic"
 IMAGE_RESIZE_MODE = "longest"
 OUT_DIR_BASE = "/workspaces/til24-cv-trainer/notebooks/archive/artifacts"
-ARTIFACT_NAME = "v1_e8_fp16"
+ARTIFACT_NAME = "v3_e32_fp16_jit"
+JIT = True
 
 
 def main():
@@ -35,12 +36,16 @@ def main():
 
     folder = Path(OUT_DIR_BASE).resolve()
     folder.mkdir(parents=True, exist_ok=True)
-    tensors = model.state_dict()
-    torch.save(
-        tensors,
-        folder / f"{ARTIFACT_NAME}.bin",
-        pickle_protocol=pickle.HIGHEST_PROTOCOL,
-    )
+    if JIT:
+        model.eval()
+        torch.jit.script(model).save(folder / f"{ARTIFACT_NAME}.bin")
+    else:
+        tensors = model.state_dict()
+        torch.save(
+            tensors,
+            folder / f"{ARTIFACT_NAME}.bin",
+            pickle_protocol=pickle.HIGHEST_PROTOCOL,
+        )
 
 
 if __name__ == "__main__":

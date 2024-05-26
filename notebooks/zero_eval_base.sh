@@ -35,7 +35,7 @@ exec python -m training.main \
     --force-patch-dropout 0 \
     --log-every-n-steps 1 \
     --model ViT-H-14-quickgelu \
-    --pretrained dfn5b \
+    --pretrained /workspaces/til24-cv-trainer/notebooks/archive/artifacts/dfn5b.bin \
     --image-interpolation bicubic \
     --image-resize-mode longest \
     --seed 42
