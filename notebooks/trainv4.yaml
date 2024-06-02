@@ -7,9 +7,9 @@ task: detect # (str) YOLO task, i.e. detect, segment, classify, pose
 mode: train # (str) YOLO mode, i.e. train, val, predict, export, track, benchmark
 
 # Train settings -------------------------------------------------------------------------------------------------------
-model: yolov9c.pt # (str, optional) path to model file, i.e. yolov8n.pt, yolov8n.yaml
+model: /workspaces/til24-cv-trainer/runs/detect/train5/weights/last.pt # (str, optional) path to model file, i.e. yolov8n.pt, yolov8n.yaml
 data: /workspaces/til24-cv-trainer/data/til24ufo/dataset.yaml # (str, optional) path to data file, i.e. coco8.yaml
-epochs: 256 # (int) number of epochs to train for
+epochs: 128 # (int) number of epochs to train for
 time: # (float, optional) number of hours to train for, overrides epochs if supplied
 patience: 0 # (int) epochs to wait for no observable improvement for early stopping of training
 batch: 6 # (int) number of images per batch (-1 for AutoBatch)
@@ -22,7 +22,7 @@ workers: 12 # (int) number of worker threads for data loading (per RANK if DDP)
 project: # (str, optional) project name
 name: # (str, optional) experiment name, results saved to 'project/name' directory
 exist_ok: False # (bool) whether to overwrite existing experiment
-pretrained: True # (bool | str) whether to use a pretrained model (bool) or a model to load weights from (str)
+pretrained: /workspaces/til24-cv-trainer/runs/detect/train5/weights/last.pt # (bool | str) whether to use a pretrained model (bool) or a model to load weights from (str)
 optimizer: SGD # (str) optimizer to use, choices=[SGD, Adam, Adamax, AdamW, NAdam, RAdam, RMSProp, auto]
 verbose: True # (bool) whether to print verbose output
 seed: 42 # (int) random seed for reproducibility
@@ -30,12 +30,13 @@ deterministic: False # (bool) whether to enable deterministic mode
 single_cls: True # (bool) train multi-class data as single-class
 rect: False # (bool) rectangular training if mode='train' or rectangular validation if mode='val'
 cos_lr: True # (bool) use cosine learning rate scheduler
-close_mosaic: 32 # (int) disable mosaic augmentation for final epochs (0 to disable)
+close_mosaic: 64 # (int) disable mosaic augmentation for final epochs (0 to disable)
 resume: False # (bool) resume training from last checkpoint
 amp: True # (bool) Automatic Mixed Precision (AMP) training, choices=[True, False], True runs AMP check
 fraction: 1.0 # (float) dataset fraction to train on (default is 1.0, all images in train set)
 profile: False # (bool) profile ONNX and TensorRT speeds during training for loggers
-freeze: [4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22] # (int | list, optional) freeze first n layers, or freeze list of layer indices during training
+# freeze: [6,7,8,9,10,11,12,13,14,15,16,17] # (int | list, optional) freeze first n layers, or freeze list of layer indices during training
+freeze:
 multi_scale: False # (bool) Whether to use multiscale during training
 # Segmentation
 overlap_mask: True # (bool) masks should overlap during training (segment train only)
@@ -61,7 +62,7 @@ vid_stride: 1 # (int) video frame-rate stride
 stream_buffer: False # (bool) buffer all streaming frames (True) or return the most recent frame (False)
 visualize: False # (bool) visualize model features
 augment: False # (bool) apply image augmentation to prediction sources
-agnostic_nms: False # (bool) class-agnostic NMS
+agnostic_nms: True # (bool) class-agnostic NMS
 classes: # (int | list[int], optional) filter results by class, i.e. classes=0, or classes=[0,2,3]
 retina_masks: False # (bool) use high-resolution segmentation masks
 embed: # (list[int], optional) return feature vectors/embeddings from given layers
@@ -89,11 +90,11 @@ workspace: 4 # (int) TensorRT: workspace size (GB)
 nms: False # (bool) CoreML: add NMS
 
 # Hyperparameters ------------------------------------------------------------------------------------------------------
-lr0: 0.01 # (float) initial learning rate (i.e. SGD=1E-2, Adam=1E-3)
-lrf: 0.001 # (float) final learning rate (lr0 * lrf)
+lr0: 0.0005 # (float) initial learning rate (i.e. SGD=1E-2, Adam=1E-3)
+lrf: 0.0001 # (float) final learning rate (lr0 * lrf)
 momentum: 0.937 # (float) SGD momentum/Adam beta1
-weight_decay: 0.0002 # (float) optimizer weight decay 5e-4
-warmup_epochs: 32.0 # (float) warmup epochs (fractions ok)
+weight_decay: 0.0005 # (float) optimizer weight decay 5e-4
+warmup_epochs: 0.0 # (float) warmup epochs (fractions ok)
 warmup_momentum: 0.8 # (float) warmup initial momentum
 warmup_bias_lr: 0.1 # (float) warmup initial bias lr
 box: 7.5 # (float) box loss gain
@@ -103,18 +104,18 @@ pose: 12.0 # (float) pose loss gain
 kobj: 1.0 # (float) keypoint obj loss gain
 label_smoothing: 0.0 # (float) label smoothing (fraction)
 nbs: 64 # (int) nominal batch size
-hsv_h: 0.02 # (float) image HSV-Hue augmentation (fraction)
-hsv_s: 0.6 # (float) image HSV-Saturation augmentation (fraction)
-hsv_v: 0.4 # (float) image HSV-Value augmentation (fraction)
-degrees: 5.0 # (float) image rotation (+/- deg)
-translate: 0.02 # (float) image translation (+/- fraction)
-scale: 0.05 # (float) image scale (+/- gain)
-shear: 1.0 # (float) image shear (+/- deg)
+hsv_h: 0.04 # (float) image HSV-Hue augmentation (fraction)
+hsv_s: 0.7 # (float) image HSV-Saturation augmentation (fraction)
+hsv_v: 0.5 # (float) image HSV-Value augmentation (fraction)
+degrees: 10 # (float) image rotation (+/- deg)
+translate: 0.1 # (float) image translation (+/- fraction)
+scale: 0.15 # (float) image scale (+/- gain)
+shear: 5.0 # (float) image shear (+/- deg)
 perspective: 0.0 # (float) image perspective (+/- fraction), range 0-0.001
 flipud: 0.0 # (float) image flip up-down (probability)
 fliplr: 0.5 # (float) image flip left-right (probability)
 bgr: 0.0 # (float) image channel BGR (probability)
-mosaic: 0.7 # (float) image mosaic (probability)
+mosaic: 0.1 # (float) image mosaic (probability)
 mixup: 0.0 # (float) image mixup (probability)
 copy_paste: 0.0 # (float) segment copy-paste (probability)
 auto_augment: randaugment # (str) auto augmentation policy for classification (randaugment, autoaugment, augmix)

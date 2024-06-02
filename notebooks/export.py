@@ -6,13 +6,13 @@ from open_clip import create_model_from_pretrained, get_model_config, get_tokeni
 from open_clip.tokenizer import HFTokenizer
 
 MODEL_ARCH = "ViT-H-14-quickgelu"
-FT_PATH = "/workspaces/til24-cv-trainer/notebooks/logs/2024_05_26-02_45_29-model_ViT-H-14-quickgelu-lr_1e-06-b_8-j_16-p_amp/checkpoints/epoch_32.pt"
+FT_PATH = "/workspaces/til24-cv-trainer/notebooks/logs/2024_06_01-03_46_26-model_ViT-H-14-quickgelu-lr_1e-06-b_32-j_16-p_amp/checkpoints/epoch_64.pt"
 PRECISION = "fp16"  # Experiments with/without AMP show no diff between fp16 and fp32
 IMAGE_INTERPOLATION = "bicubic"
 IMAGE_RESIZE_MODE = "longest"
 OUT_DIR_BASE = "/workspaces/til24-cv-trainer/notebooks/archive/artifacts"
-ARTIFACT_NAME = "v3_e32_fp16_jit"
-JIT = True
+ARTIFACT_NAME = "v4_e64_fp16"
+JIT = False
 
 
 def main():
